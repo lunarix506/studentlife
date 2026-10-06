@@ -1,0 +1,3690 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <!-- =====================================================
+         DOCUMENT META
+    ====================================================== -->
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    >
+
+    <meta
+        name="theme-color"
+        content="#07100a"
+    >
+
+    <meta
+        name="description"
+        content="Student Life — an open-world student life simulation game."
+    >
+
+    <meta
+        name="author"
+        content="Student Life"
+    >
+
+    <title>Student Life</title>
+
+
+    <!-- =====================================================
+         PHASER
+    ====================================================== -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/phaser@3.90.0/dist/phaser.min.js"
+    ></script>
+
+
+    <!-- =====================================================
+         MAIN STYLESHEET
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         APPLICATION ROOT
+         
+         Everything belonging to the game lives inside here.
+    ====================================================== -->
+
+    <div id="app">
+
+
+        <!-- =================================================
+             GLOBAL BACKDROP / TRANSITION LAYER
+        ================================================== -->
+
+        <div
+            id="screen-transition"
+            class="screen-transition"
+            aria-hidden="true"
+        ></div>
+
+
+        <!-- =================================================
+             LOADING SCREEN
+             
+             Used when the game is starting, loading a save,
+             preparing a new world, or eventually connecting
+             to multiplayer.
+        ================================================== -->
+
+        <section
+            id="loading-screen"
+            class="screen loading-screen"
+            hidden
+            aria-label="Loading game"
+        >
+
+            <div class="loading-content">
+
+                <div class="loading-logo">
+
+                    <span class="loading-logo-main">
+                        STUDENT
+                    </span>
+
+                    <span class="loading-logo-sub">
+                        LIFE
+                    </span>
+
+                </div>
+
+
+                <p
+                    id="loading-status"
+                    class="loading-status"
+                >
+                    Preparing your life...
+                </p>
+
+
+                <div class="loading-bar">
+
+                    <div
+                        id="loading-progress"
+                        class="loading-progress"
+                    ></div>
+
+                </div>
+
+
+                <p
+                    id="loading-percentage"
+                    class="loading-percentage"
+                >
+                    0%
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             CHARACTER CREATION SCREEN
+        ================================================== -->
+
+        <section
+            id="character-creation"
+            class="screen character-creation-screen"
+            aria-label="Create your character"
+        >
+
+            <!-- Decorative background layers -->
+
+            <div
+                class="creation-background"
+                aria-hidden="true"
+            >
+
+                <div class="creation-sky"></div>
+
+                <div class="creation-glow"></div>
+
+                <div class="creation-campus"></div>
+
+                <div class="creation-ground"></div>
+
+                <div class="creation-particles"></div>
+
+            </div>
+
+
+            <!-- Character creation card -->
+
+            <div class="creation-card">
+
+
+                <!-- Game identity -->
+
+                <div class="creation-brand">
+
+                    <p class="brand-overline">
+                        WELCOME TO
+                    </p>
+
+                    <h1>
+                        STUDENT
+                        <span>LIFE</span>
+                    </h1>
+
+                    <p class="brand-tagline">
+                        Your choices. Your journey. Your story.
+                    </p>
+
+                </div>
+
+
+                <!-- Creation progress -->
+
+                <div
+                    id="creation-progress"
+                    class="creation-progress"
+                    aria-hidden="true"
+                >
+
+                    <div class="creation-step active">
+                        <span>1</span>
+                        <small>Identity</small>
+                    </div>
+
+                    <div class="creation-line"></div>
+
+                    <div class="creation-step">
+                        <span>2</span>
+                        <small>Student</small>
+                    </div>
+
+                    <div class="creation-line"></div>
+
+                    <div class="creation-step">
+                        <span>3</span>
+                        <small>Life</small>
+                    </div>
+
+                </div>
+
+
+                <!-- Character creation form -->
+
+                <form
+                    id="character-form"
+                    novalidate
+                >
+
+
+                    <!-- =====================================
+                         IDENTITY SECTION
+                    ====================================== -->
+
+                    <div
+                        class="form-section"
+                        data-form-section="identity"
+                    >
+
+                        <div class="form-section-heading">
+
+                            <div>
+                                <p class="section-kicker">
+                                    YOUR IDENTITY
+                                </p>
+
+                                <h2>
+                                    Create your character
+                                </h2>
+                            </div>
+
+                        </div>
+
+
+                        <!-- Name -->
+
+                        <div class="form-field">
+
+                            <label
+                                for="player-name"
+                            >
+                                Name
+                            </label>
+
+                            <div class="input-wrapper">
+
+                                <span
+                                    class="input-icon"
+                                    aria-hidden="true"
+                                >
+                                    A
+                                </span>
+
+                                <input
+                                    type="text"
+                                    id="player-name"
+                                    name="playerName"
+                                    placeholder="Enter your name"
+                                    maxlength="20"
+                                    autocomplete="name"
+                                    required
+                                >
+
+                            </div>
+
+                            <small
+                                class="field-hint"
+                            >
+                                This is how other students will know you.
+                            </small>
+
+                        </div>
+
+
+                        <!-- Age -->
+
+                        <div class="form-field">
+
+                            <label
+                                for="player-age"
+                            >
+                                Age
+                            </label>
+
+                            <div class="input-wrapper">
+
+                                <span
+                                    class="input-icon"
+                                    aria-hidden="true"
+                                >
+                                    #
+                                </span>
+
+                                <input
+                                    type="number"
+                                    id="player-age"
+                                    name="playerAge"
+                                    min="16"
+                                    max="60"
+                                    placeholder="18"
+                                    inputmode="numeric"
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Gender -->
+
+                        <div class="form-field">
+
+                            <label
+                                for="player-gender"
+                            >
+                                Gender
+                            </label>
+
+                            <div class="input-wrapper select-wrapper">
+
+                                <span
+                                    class="input-icon"
+                                    aria-hidden="true"
+                                >
+                                    ◇
+                                </span>
+
+                                <select
+                                    id="player-gender"
+                                    name="playerGender"
+                                    required
+                                >
+
+                                    <option value="">
+                                        Select gender
+                                    </option>
+
+                                    <option value="male">
+                                        Male
+                                    </option>
+
+                                    <option value="female">
+                                        Female
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Course -->
+
+                        <div class="form-field">
+
+                            <label
+                                for="player-course"
+                            >
+                                Course of study
+                            </label>
+
+                            <div class="input-wrapper">
+
+                                <span
+                                    class="input-icon"
+                                    aria-hidden="true"
+                                >
+                                    §
+                                </span>
+
+                                <input
+                                    type="text"
+                                    id="player-course"
+                                    name="playerCourse"
+                                    placeholder="e.g. Law"
+                                    maxlength="40"
+                                    autocomplete="off"
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Character preview information -->
+
+                        <div
+                            id="creation-preview"
+                            class="creation-preview"
+                        >
+
+                            <div
+                                id="creation-avatar"
+                                class="creation-avatar"
+                                aria-hidden="true"
+                            >
+                                <span>
+                                    ?
+                                </span>
+                            </div>
+
+                            <div class="creation-preview-info">
+
+                                <p
+                                    id="preview-name"
+                                    class="preview-name"
+                                >
+                                    Your Character
+                                </p>
+
+                                <p
+                                    id="preview-course"
+                                    class="preview-course"
+                                >
+                                    Choose your course
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Start button -->
+
+                        <button
+                            type="submit"
+                            id="start-life-button"
+                            class="primary-button"
+                        >
+
+                            <span class="button-main-text">
+                                START LIFE
+                            </span>
+
+                            <span class="button-sub-text">
+                                Begin your journey
+                            </span>
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+
+                <!-- Version information -->
+
+                <div class="creation-footer">
+
+                    <span>
+                        STUDENT LIFE
+                    </span>
+
+                    <span>
+                        •
+                    </span>
+
+                    <span>
+                        EARLY ACCESS
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             GAME WORLD
+             
+             Phaser will render the actual world here.
+        ================================================== -->
+
+        <main
+            id="game-container"
+            aria-label="Student Life game world"
+        ></main>
+
+
+        <!-- =================================================
+             IN-GAME USER INTERFACE
+             
+             This layer sits above the Phaser canvas.
+        ================================================== -->
+
+        <div
+            id="game-ui"
+            class="game-ui"
+            aria-hidden="true"
+        >
+
+
+            <!-- =============================================
+                 TOP LEFT PLAYER HUD
+            ============================================== -->
+
+            <section
+                id="player-hud"
+                class="hud-panel player-hud"
+                aria-label="Player status"
+            >
+
+                <div class="hud-player-header">
+
+                    <div
+                        id="hud-avatar"
+                        class="hud-avatar"
+                        aria-hidden="true"
+                    >
+                        <span id="hud-avatar-letter">
+                            ?
+                        </span>
+                    </div>
+
+                    <div class="hud-player-info">
+
+                        <p
+                            id="hud-player-name"
+                            class="hud-player-name"
+                        >
+                            Student
+                        </p>
+
+                        <p
+                            id="hud-player-course"
+                            class="hud-player-course"
+                        >
+                            Student
+                        </p>
+
+                    </div>
+
+                    <button
+                        id="hud-profile-button"
+                        class="hud-icon-button"
+                        type="button"
+                        aria-label="Open profile"
+                        title="Profile"
+                    >
+                        ☰
+                    </button>
+
+                </div>
+
+
+                <!-- Money -->
+
+                <div class="hud-money">
+
+                    <span class="hud-money-label">
+                        BALANCE
+                    </span>
+
+                    <strong
+                        id="money-value"
+                    >
+                        ₦20,000
+                    </strong>
+
+                </div>
+
+
+                <!-- Needs -->
+
+                <div class="hud-needs">
+
+                    <!-- Health -->
+
+                    <div
+                        class="need-row"
+                        data-stat="health"
+                    >
+
+                        <div class="need-header">
+
+                            <span>
+                                HEALTH
+                            </span>
+
+                            <strong
+                                id="health-value"
+                            >
+                                100
+                            </strong>
+
+                        </div>
+
+                        <div class="stat-bar">
+
+                            <div
+                                id="health-bar"
+                                class="stat-bar-fill health-bar"
+                                style="width: 100%;"
+                            ></div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Energy -->
+
+                    <div
+                        class="need-row"
+                        data-stat="energy"
+                    >
+
+                        <div class="need-header">
+
+                            <span>
+                                ENERGY
+                            </span>
+
+                            <strong
+                                id="energy-value"
+                            >
+                                100
+                            </strong>
+
+                        </div>
+
+                        <div class="stat-bar">
+
+                            <div
+                                id="energy-bar"
+                                class="stat-bar-fill energy-bar"
+                                style="width: 100%;"
+                            ></div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Hunger -->
+
+                    <div
+                        class="need-row"
+                        data-stat="hunger"
+                    >
+
+                        <div class="need-header">
+
+                            <span>
+                                HUNGER
+                            </span>
+
+                            <strong
+                                id="hunger-value"
+                            >
+                                100
+                            </strong>
+
+                        </div>
+
+                        <div class="stat-bar">
+
+                            <div
+                                id="hunger-bar"
+                                class="stat-bar-fill hunger-bar"
+                                style="width: 100%;"
+                            ></div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Happiness -->
+
+                    <div
+                        class="need-row"
+                        data-stat="happiness"
+                    >
+
+                        <div class="need-header">
+
+                            <span>
+                                HAPPINESS
+                            </span>
+
+                            <strong
+                                id="happiness-value"
+                            >
+                                100
+                            </strong>
+
+                        </div>
+
+                        <div class="stat-bar">
+
+                            <div
+                                id="happiness-bar"
+                                class="stat-bar-fill happiness-bar"
+                                style="width: 100%;"
+                            ></div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 TOP CENTER LOCATION DISPLAY
+            ============================================== -->
+
+            <div
+                id="location-display"
+                class="location-display"
+                aria-live="polite"
+            >
+
+                <p
+                    id="location-name"
+                    class="location-name"
+                >
+                    UNIVERSITY CAMPUS
+                </p>
+
+                <p
+                    id="location-subtitle"
+                    class="location-subtitle"
+                >
+                    Osun State University
+                </p>
+
+            </div>
+
+
+            <!-- =============================================
+                 TOP RIGHT TIME / DAY
+            ============================================== -->
+
+            <section
+                id="time-panel"
+                class="hud-panel time-panel"
+                aria-label="Game time"
+            >
+
+                <div class="time-main">
+
+                    <span
+                        id="time-value"
+                        class="time-value"
+                    >
+                        08:00
+                    </span>
+
+                    <span
+                        id="time-period"
+                        class="time-period"
+                    >
+                        AM
+                    </span>
+
+                </div>
+
+                <div
+                    id="day-value"
+                    class="day-value"
+                >
+                    DAY 1
+                </div>
+
+                <div
+                    id="date-value"
+                    class="date-value"
+                >
+                    MONDAY
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 QUEST / ACTIVITY TRACKER
+            ============================================== -->
+
+            <aside
+                id="quest-tracker"
+                class="quest-tracker hud-panel"
+                aria-label="Current objectives"
+            >
+
+                <div class="quest-header">
+
+                    <span class="quest-kicker">
+                        CURRENT OBJECTIVE
+                    </span>
+
+                    <button
+                        id="quest-log-button"
+                        class="small-ui-button"
+                        type="button"
+                        aria-label="Open quest log"
+                    >
+                        LOG
+                    </button>
+
+                </div>
+
+                <h3
+                    id="current-quest-title"
+                >
+                    Explore the campus
+                </h3>
+
+                <p
+                    id="current-quest-description"
+                >
+                    Walk around and get familiar with your new environment.
+                </p>
+
+                <div class="quest-progress">
+
+                    <div
+                        id="quest-progress-bar"
+                        class="quest-progress-fill"
+                        style="width: 0%;"
+                    ></div>
+
+                </div>
+
+                <p
+                    id="quest-progress-text"
+                    class="quest-progress-text"
+                >
+                    0 / 1
+                </p>
+
+            </aside>
+
+
+            <!-- =============================================
+                 MINIMAP
+            ============================================== -->
+
+            <section
+                id="minimap"
+                class="minimap"
+                aria-label="Campus minimap"
+            >
+
+                <div class="minimap-header">
+
+                    <span>
+                        CAMPUS
+                    </span>
+
+                    <button
+                        id="map-expand-button"
+                        class="minimap-button"
+                        type="button"
+                        aria-label="Open full map"
+                    >
+                        +
+                    </button>
+
+                </div>
+
+                <div
+                    id="minimap-world"
+                    class="minimap-world"
+                >
+
+                    <div
+                        class="minimap-road minimap-road-horizontal"
+                    ></div>
+
+                    <div
+                        class="minimap-road minimap-road-vertical"
+                    ></div>
+
+                    <div
+                        id="minimap-player"
+                        class="minimap-player"
+                    ></div>
+
+                    <div
+                        id="minimap-npcs"
+                        class="minimap-npcs"
+                    ></div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 INTERACTION PROMPT
+            ============================================== -->
+
+            <div
+                id="interaction-prompt"
+                class="interaction-prompt"
+                hidden
+            >
+
+                <span
+                    id="interaction-key"
+                    class="interaction-key"
+                >
+                    E
+                </span>
+
+                <span
+                    id="interaction-text"
+                >
+                    Interact
+                </span>
+
+            </div>
+
+
+            <!-- =============================================
+                 NOTIFICATION / MESSAGE
+            ============================================== -->
+
+            <div
+                id="notification-container"
+                class="notification-container"
+                aria-live="polite"
+                aria-atomic="true"
+            >
+
+                <div
+                    id="message"
+                    class="game-notification"
+                    hidden
+                >
+
+                    <div class="notification-icon">
+                        !
+                    </div>
+
+                    <div class="notification-content">
+
+                        <p
+                            id="message-title"
+                            class="notification-title"
+                        >
+                            Notification
+                        </p>
+
+                        <p
+                            id="message-body"
+                            class="notification-body"
+                        >
+                            Message
+                        </p>
+
+                    </div>
+
+                    <button
+                        id="message-close"
+                        class="notification-close"
+                        type="button"
+                        aria-label="Close notification"
+                    >
+                        ×
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- =============================================
+                 DIALOGUE SYSTEM
+            ============================================== -->
+
+            <section
+                id="dialogue-panel"
+                class="dialogue-panel"
+                hidden
+                aria-label="Conversation"
+                aria-live="polite"
+            >
+
+                <div class="dialogue-character">
+
+                    <div
+                        id="dialogue-avatar"
+                        class="dialogue-avatar"
+                    >
+
+                        <span
+                            id="dialogue-avatar-letter"
+                        >
+                            ?
+                        </span>
+
+                    </div>
+
+                    <div class="dialogue-character-info">
+
+                        <p
+                            id="dialogue-speaker"
+                            class="dialogue-speaker"
+                        >
+                            NPC
+                        </p>
+
+                        <p
+                            id="dialogue-role"
+                            class="dialogue-role"
+                        >
+                            Student
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Relationship -->
+
+                <div
+                    id="dialogue-relationship"
+                    class="dialogue-relationship"
+                >
+
+                    <div class="relationship-top">
+
+                        <span>
+                            RELATIONSHIP
+                        </span>
+
+                        <strong
+                            id="dialogue-relationship-level"
+                        >
+                            Stranger
+                        </strong>
+
+                    </div>
+
+                    <div class="relationship-bar">
+
+                        <div
+                            id="dialogue-relationship-fill"
+                            class="relationship-fill"
+                            style="width: 0%;"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Dialogue text -->
+
+                <div class="dialogue-content">
+
+                    <p
+                        id="dialogue-body"
+                        class="dialogue-body"
+                    >
+                        Hello.
+                    </p>
+
+                </div>
+
+
+                <!-- Choices -->
+
+                <div
+                    id="dialogue-choices"
+                    class="dialogue-choices"
+                >
+
+                    <button
+                        class="dialogue-choice"
+                        data-choice-index="0"
+                        type="button"
+                    >
+                        <span class="choice-number">
+                            1
+                        </span>
+
+                        <span class="choice-text">
+                            Continue
+                        </span>
+                    </button>
+
+                    <button
+                        class="dialogue-choice"
+                        data-choice-index="1"
+                        type="button"
+                    >
+                        <span class="choice-number">
+                            2
+                        </span>
+
+                        <span class="choice-text">
+                            Ask
+                        </span>
+                    </button>
+
+                    <button
+                        class="dialogue-choice"
+                        data-choice-index="2"
+                        type="button"
+                    >
+                        <span class="choice-number">
+                            3
+                        </span>
+
+                        <span class="choice-text">
+                            Leave
+                        </span>
+                    </button>
+
+                </div>
+
+
+                <!-- Dialogue footer -->
+
+                <div class="dialogue-footer">
+
+                    <span
+                        id="dialogue-hint"
+                    >
+                        Press a number to choose
+                    </span>
+
+                    <button
+                        id="dialogue-close"
+                        type="button"
+                        class="dialogue-close-button"
+                    >
+                        ESC — CLOSE
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 INVENTORY
+            ============================================== -->
+
+            <section
+                id="inventory-panel"
+                class="modal-panel inventory-panel"
+                hidden
+                aria-label="Inventory"
+            >
+
+                <div class="modal-header">
+
+                    <div>
+
+                        <p class="modal-kicker">
+                            PERSONAL ITEMS
+                        </p>
+
+                        <h2>
+                            Inventory
+                        </h2>
+
+                    </div>
+
+                    <button
+                        id="inventory-close"
+                        class="modal-close"
+                        type="button"
+                        aria-label="Close inventory"
+                    >
+                        ×
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="inventory-grid"
+                    class="inventory-grid"
+                >
+
+                    <!-- Food -->
+
+                    <article
+                        class="inventory-item"
+                        data-item="food"
+                    >
+
+                        <div class="inventory-item-icon">
+                            🍔
+                        </div>
+
+                        <div class="inventory-item-info">
+
+                            <h3>
+                                Food
+                            </h3>
+
+                            <p>
+                                Meals and snacks
+                            </p>
+
+                        </div>
+
+                        <strong
+                            id="inventory-food"
+                            class="inventory-quantity"
+                        >
+                            0
+                        </strong>
+
+                    </article>
+
+
+                    <!-- Data -->
+
+                    <article
+                        class="inventory-item"
+                        data-item="data"
+                    >
+
+                        <div class="inventory-item-icon">
+                            ◉
+                        </div>
+
+                        <div class="inventory-item-info">
+
+                            <h3>
+                                Mobile Data
+                            </h3>
+
+                            <p>
+                                Internet bundles
+                            </p>
+
+                        </div>
+
+                        <strong
+                            id="inventory-data"
+                            class="inventory-quantity"
+                        >
+                            0
+                        </strong>
+
+                    </article>
+
+
+                    <!-- Books -->
+
+                    <article
+                        class="inventory-item"
+                        data-item="books"
+                    >
+
+                        <div class="inventory-item-icon">
+                            📚
+                        </div>
+
+                        <div class="inventory-item-info">
+
+                            <h3>
+                                Books
+                            </h3>
+
+                            <p>
+                                Academic materials
+                            </p>
+
+                        </div>
+
+                        <strong
+                            id="inventory-books"
+                            class="inventory-quantity"
+                        >
+                            0
+                        </strong>
+
+                    </article>
+
+
+                    <!-- Clothes -->
+
+                    <article
+                        class="inventory-item"
+                        data-item="clothes"
+                    >
+
+                        <div class="inventory-item-icon">
+                            👕
+                        </div>
+
+                        <div class="inventory-item-info">
+
+                            <h3>
+                                Clothes
+                            </h3>
+
+                            <p>
+                                Personal clothing
+                            </p>
+
+                        </div>
+
+                        <strong
+                            id="inventory-clothes"
+                            class="inventory-quantity"
+                        >
+                            0
+                        </strong>
+
+                    </article>
+
+                </div>
+
+
+                <div class="inventory-footer">
+
+                    <span>
+                        Inventory capacity
+                    </span>
+
+                    <span
+                        id="inventory-capacity"
+                    >
+                        4 / 20
+                    </span>
+
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 CAMPUS SHOP
+            ============================================== -->
+
+            <section
+                id="shop-panel"
+                class="modal-panel shop-panel"
+                hidden
+                aria-label="Campus shop"
+            >
+
+                <div class="modal-header">
+
+                    <div>
+
+                        <p class="modal-kicker">
+                            CAMPUS STORE
+                        </p>
+
+                        <h2>
+                            Campus Shop
+                        </h2>
+
+                    </div>
+
+                    <button
+                        id="shop-close"
+                        class="modal-close"
+                        type="button"
+                        aria-label="Close shop"
+                    >
+                        ×
+                    </button>
+
+                </div>
+
+
+                <!-- Shop balance -->
+
+                <div class="shop-balance">
+
+                    <span>
+                        YOUR BALANCE
+                    </span>
+
+                    <strong
+                        id="shop-money"
+                    >
+                        ₦20,000
+                    </strong>
+
+                </div>
+
+
+                <!-- Shop categories -->
+
+                <div
+                    id="shop-categories"
+                    class="shop-categories"
+                >
+
+                    <button
+                        class="shop-category active"
+                        data-category="all"
+                        type="button"
+                    >
+                        All
+                    </button>
+
+                    <button
+                        class="shop-category"
+                        data-category="food"
+                        type="button"
+                    >
+                        Food
+                    </button>
+
+                    <button
+                        class="shop-category"
+                        data-category="academic"
+                        type="button"
+                    >
+                        Academic
+                    </button>
+
+                    <button
+                        class="shop-category"
+                        data-category="lifestyle"
+                        type="button"
+                    >
+                        Lifestyle
+                    </button>
+
+                </div>
+
+
+                <!-- Products -->
+
+                <div
+                    id="shop-items"
+                    class="shop-items"
+                >
+
+                    <!-- Snack -->
+
+                    <article
+                        class="shop-item"
+                        data-item="food"
+                        data-price="300"
+                    >
+
+                        <div class="shop-item-icon">
+                            🍔
+                        </div>
+
+                        <div class="shop-item-info">
+
+                            <p class="shop-item-category">
+                                FOOD
+                            </p>
+
+                            <h3>
+                                Snack
+                            </h3>
+
+                            <p>
+                                A quick bite for your journey.
+                            </p>
+
+                        </div>
+
+                        <div class="shop-item-purchase">
+
+                            <strong>
+                                ₦300
+                            </strong>
+
+                            <button
+                                class="shop-buy-button"
+                                data-item="food"
+                                data-price="300"
+                                type="button"
+                            >
+                                BUY
+                            </button>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- Data -->
+
+                    <article
+                        class="shop-item"
+                        data-item="data"
+                        data-price="1000"
+                    >
+
+                        <div class="shop-item-icon">
+                            ◉
+                        </div>
+
+                        <div class="shop-item-info">
+
+                            <p class="shop-item-category">
+                                CONNECTIVITY
+                            </p>
+
+                            <h3>
+                                Mobile Data
+                            </h3>
+
+                            <p>
+                                Stay connected with friends.
+                            </p>
+
+                        </div>
+
+                        <div class="shop-item-purchase">
+
+                            <strong>
+                                ₦1,000
+                            </strong>
+
+                            <button
+                                class="shop-buy-button"
+                                data-item="data"
+                                data-price="1000"
+                                type="button"
+                            >
+                                BUY
+                            </button>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- Books -->
+
+                    <article
+                        class="shop-item"
+                        data-item="books"
+                        data-price="2500"
+                    >
+
+                        <div class="shop-item-icon">
+                            📚
+                        </div>
+
+                        <div class="shop-item-info">
+
+                            <p class="shop-item-category">
+                                ACADEMIC
+                            </p>
+
+                            <h3>
+                                School Books
+                            </h3>
+
+                            <p>
+                                Materials for your studies.
+                            </p>
+
+                        </div>
+
+                        <div class="shop-item-purchase">
+
+                            <strong>
+                                ₦2,500
+                            </strong>
+
+                            <button
+                                class="shop-buy-button"
+                                data-item="books"
+                                data-price="2500"
+                                type="button"
+                            >
+                                BUY
+                            </button>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- Clothes -->
+
+                    <article
+                        class="shop-item"
+                        data-item="clothes"
+                        data-price="5000"
+                    >
+
+                        <div class="shop-item-icon">
+                            👕
+                        </div>
+
+                        <div class="shop-item-info">
+
+                            <p class="shop-item-category">
+                                LIFESTYLE
+                            </p>
+
+                            <h3>
+                                Clothes
+                            </h3>
+
+                            <p>
+                                Update your student wardrobe.
+                            </p>
+
+                        </div>
+
+                        <div class="shop-item-purchase">
+
+                            <strong>
+                                ₦5,000
+                            </strong>
+
+                            <button
+                                class="shop-buy-button"
+                                data-item="clothes"
+                                data-price="5000"
+                                type="button"
+                            >
+                                BUY
+                            </button>
+
+                        </div>
+
+                    </article>
+
+                </div>
+
+
+                <div class="modal-footer">
+
+                    <span>
+                        Press ESC to close
+                    </span>
+
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 PROFILE
+            ============================================== -->
+
+            <section
+                id="profile-panel"
+                class="modal-panel profile-panel"
+                hidden
+                aria-label="Player profile"
+            >
+
+                <div class="modal-header">
+
+                    <div>
+
+                        <p class="modal-kicker">
+                            PERSONAL PROFILE
+                        </p>
+
+                        <h2>
+                            My Student
+                        </h2>
+
+                    </div>
+
+                    <button
+                        id="profile-close"
+                        class="modal-close"
+                        type="button"
+                        aria-label="Close profile"
+                    >
+                        ×
+                    </button>
+
+                </div>
+
+
+                <div class="profile-hero">
+
+                    <div
+                        id="profile-avatar"
+                        class="profile-avatar"
+                    >
+                        ?
+                    </div>
+
+                    <div>
+
+                        <h3
+                            id="profile-name"
+                        >
+                            Student
+                        </h3>
+
+                        <p
+                            id="profile-course"
+                        >
+                            Course
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="profile-grid">
+
+                    <div class="profile-stat">
+
+                        <span>
+                            AGE
+                        </span>
+
+                        <strong
+                            id="profile-age"
+                        >
+                            18
+                        </strong>
+
+                    </div>
+
+                    <div class="profile-stat">
+
+                        <span>
+                            GENDER
+                        </span>
+
+                        <strong
+                            id="profile-gender"
+                        >
+                            —
+                        </strong>
+
+                    </div>
+
+                    <div class="profile-stat">
+
+                        <span>
+                            DAY
+                        </span>
+
+                        <strong
+                            id="profile-day"
+                        >
+                            1
+                        </strong>
+
+                    </div>
+
+                    <div class="profile-stat">
+
+                        <span>
+                            MONEY
+                        </span>
+
+                        <strong
+                            id="profile-money"
+                        >
+                            ₦20,000
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Academic progress -->
+
+                <div class="profile-section">
+
+                    <div class="profile-section-heading">
+
+                        <h3>
+                            Academic Progress
+                        </h3>
+
+                        <span
+                            id="academic-progress-value"
+                        >
+                            0%
+                        </span>
+
+                    </div>
+
+                    <div class="large-progress-bar">
+
+                        <div
+                            id="academic-progress-bar"
+                            class="large-progress-fill"
+                            style="width: 0%;"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Reputation -->
+
+                <div class="profile-section">
+
+                    <div class="profile-section-heading">
+
+                        <h3>
+                            Campus Reputation
+                        </h3>
+
+                        <span
+                            id="reputation-value"
+                        >
+                            Unknown
+                        </span>
+
+                    </div>
+
+                    <div class="large-progress-bar">
+
+                        <div
+                            id="reputation-bar"
+                            class="large-progress-fill"
+                            style="width: 0%;"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 RELATIONSHIPS PANEL
+            ============================================== -->
+
+            <section
+                id="relationships-panel"
+                class="modal-panel relationships-panel"
+                hidden
+                aria-label="Relationships"
+            >
+
+                <div class="modal-header">
+
+                    <div>
+
+                        <p class="modal-kicker">
+                            SOCIAL LIFE
+                        </p>
+
+                        <h2>
+                            Relationships
+                        </h2>
+
+                    </div>
+
+                    <button
+                        id="relationships-close"
+                        class="modal-close"
+                        type="button"
+                        aria-label="Close relationships"
+                    >
+                        ×
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="relationships-list"
+                    class="relationships-list"
+                >
+
+                    <!-- NPC relationship cards will be
+                         generated/populated by JavaScript. -->
+
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 QUEST LOG
+            ============================================== -->
+
+            <section
+                id="quest-log-panel"
+                class="modal-panel quest-log-panel"
+                hidden
+                aria-label="Quest log"
+            >
+
+                <div class="modal-header">
+
+                    <div>
+
+                        <p class="modal-kicker">
+                            YOUR JOURNEY
+                        </p>
+
+                        <h2>
+                            Quest Log
+                        </h2>
+
+                    </div>
+
+                    <button
+                        id="quest-log-close"
+                        class="modal-close"
+                        type="button"
+                        aria-label="Close quest log"
+                    >
+                        ×
+                    </button>
+
+                </div>
+
+
+                <div class="quest-tabs">
+
+                    <button
+                        class="quest-tab active"
+                        data-quest-filter="active"
+                        type="button"
+                    >
+                        Active
+                    </button>
+
+                    <button
+                        class="quest-tab"
+                        data-quest-filter="completed"
+                        type="button"
+                    >
+                        Completed
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="quest-log-list"
+                    class="quest-log-list"
+                >
+
+                    <!-- Quest cards generated later. -->
+
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 MAP
+            ============================================== -->
+
+            <section
+                id="map-panel"
+                class="modal-panel map-panel"
+                hidden
+                aria-label="Campus map"
+            >
+
+                <div class="modal-header">
+
+                    <div>
+
+                        <p class="modal-kicker">
+                            NAVIGATION
+                        </p>
+
+                        <h2>
+                            Campus Map
+                        </h2>
+
+                    </div>
+
+                    <button
+                        id="map-close"
+                        class="modal-close"
+                        type="button"
+                        aria-label="Close map"
+                    >
+                        ×
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="full-map"
+                    class="full-map"
+                >
+
+                    <!-- Map environment -->
+
+                    <div class="map-land"></div>
+
+                    <div class="map-road map-road-main"></div>
+
+                    <div class="map-road map-road-vertical"></div>
+
+                    <div
+                        class="map-location"
+                        data-location="university"
+                        style="left: 24%; top: 18%;"
+                    >
+                        <span>University</span>
+                    </div>
+
+                    <div
+                        class="map-location"
+                        data-location="lectureHall"
+                        style="left: 28%; top: 43%;"
+                    >
+                        <span>Lecture Hall</span>
+                    </div>
+
+                    <div
+                        class="map-location"
+                        data-location="lawFaculty"
+                        style="left: 38%; top: 65%;"
+                    >
+                        <span>Law Faculty</span>
+                    </div>
+
+                    <div
+                        class="map-location"
+                        data-location="library"
+                        style="left: 63%; top: 67%;"
+                    >
+                        <span>Library</span>
+                    </div>
+
+                    <div
+                        class="map-location"
+                        data-location="hostel"
+                        style="left: 80%; top: 18%;"
+                    >
+                        <span>Hostel</span>
+                    </div>
+
+                    <div
+                        class="map-location"
+                        data-location="kitchen"
+                        style="left: 12%; top: 84%;"
+                    >
+                        <span>Mama's Kitchen</span>
+                    </div>
+
+                    <div
+                        class="map-location"
+                        data-location="shop"
+                        style="left: 31%; top: 84%;"
+                    >
+                        <span>Campus Shop</span>
+                    </div>
+
+                    <div
+                        class="map-location"
+                        data-location="busStop"
+                        style="left: 52%; top: 11%;"
+                    >
+                        <span>Bus Stop</span>
+                    </div>
+
+                    <div
+                        class="map-location"
+                        data-location="job"
+                        style="left: 70%; top: 88%;"
+                    >
+                        <span>Work</span>
+                    </div>
+
+                    <div
+                        class="map-location"
+                        data-location="residence"
+                        style="left: 14%; top: 53%;"
+                    >
+                        <span>Residence</span>
+                    </div>
+
+
+                    <!-- Player marker -->
+
+                    <div
+                        id="map-player-marker"
+                        class="map-player-marker"
+                    ></div>
+
+                </div>
+
+
+                <div class="map-footer">
+
+                    <span>
+                        Your position
+                    </span>
+
+                    <span>
+                        ●
+                    </span>
+
+                    <span>
+                        Press M to open
+                    </span>
+
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 PHONE
+                 
+                 Future social / contacts / messaging system.
+            ============================================== -->
+
+            <section
+                id="phone-panel"
+                class="phone-panel"
+                hidden
+                aria-label="Phone"
+            >
+
+                <div class="phone-device">
+
+                    <div class="phone-notch"></div>
+
+                    <div class="phone-header">
+
+                        <span
+                            id="phone-time"
+                        >
+                            08:00
+                        </span>
+
+                        <span>
+                            ● ● ●
+                        </span>
+
+                    </div>
+
+
+                    <div class="phone-screen">
+
+                        <div class="phone-profile">
+
+                            <div
+                                id="phone-avatar"
+                                class="phone-avatar"
+                            >
+                                ?
+                            </div>
+
+                            <p
+                                id="phone-owner-name"
+                            >
+                                Student
+                            </p>
+
+                        </div>
+
+
+                        <div class="phone-app-grid">
+
+                            <button
+                                class="phone-app"
+                                data-phone-app="messages"
+                                type="button"
+                            >
+
+                                <span>
+                                    💬
+                                </span>
+
+                                <small>
+                                    Messages
+                                </small>
+
+                            </button>
+
+
+                            <button
+                                class="phone-app"
+                                data-phone-app="contacts"
+                                type="button"
+                            >
+
+                                <span>
+                                    👥
+                                </span>
+
+                                <small>
+                                    Contacts
+                                </small>
+
+                            </button>
+
+
+                            <button
+                                class="phone-app"
+                                data-phone-app="calendar"
+                                type="button"
+                            >
+
+                                <span>
+                                    📅
+                                </span>
+
+                                <small>
+                                    Calendar
+                                </small>
+
+                            </button>
+
+
+                            <button
+                                class="phone-app"
+                                data-phone-app="bank"
+                                type="button"
+                            >
+
+                                <span>
+                                    ₦
+                                </span>
+
+                                <small>
+                                    Bank
+                                </small>
+
+                            </button>
+
+
+                            <button
+                                class="phone-app"
+                                data-phone-app="camera"
+                                type="button"
+                            >
+
+                                <span>
+                                    ◉
+                                </span>
+
+                                <small>
+                                    Camera
+                                </small>
+
+                            </button>
+
+
+                            <button
+                                class="phone-app"
+                                data-phone-app="settings"
+                                type="button"
+                            >
+
+                                <span>
+                                    ⚙
+                                </span>
+
+                                <small>
+                                    Settings
+                                </small>
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="phone-home-button"></div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 PHONE MESSAGES
+            ============================================== -->
+
+            <section
+                id="messages-panel"
+                class="modal-panel messages-panel"
+                hidden
+                aria-label="Messages"
+            >
+
+                <div class="modal-header">
+
+                    <div>
+
+                        <p class="modal-kicker">
+                            PHONE
+                        </p>
+
+                        <h2>
+                            Messages
+                        </h2>
+
+                    </div>
+
+                    <button
+                        id="messages-close"
+                        class="modal-close"
+                        type="button"
+                        aria-label="Close messages"
+                    >
+                        ×
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="message-list"
+                    class="message-list"
+                >
+
+                    <!-- Messages generated later. -->
+
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 CONTACTS
+            ============================================== -->
+
+            <section
+                id="contacts-panel"
+                class="modal-panel contacts-panel"
+                hidden
+                aria-label="Contacts"
+            >
+
+                <div class="modal-header">
+
+                    <div>
+
+                        <p class="modal-kicker">
+                            PHONE
+                        </p>
+
+                        <h2>
+                            Contacts
+                        </h2>
+
+                    </div>
+
+                    <button
+                        id="contacts-close"
+                        class="modal-close"
+                        type="button"
+                        aria-label="Close contacts"
+                    >
+                        ×
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="contacts-list"
+                    class="contacts-list"
+                >
+
+                    <!-- NPC contacts generated later. -->
+
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 PAUSE MENU
+            ============================================== -->
+
+            <section
+                id="pause-menu"
+                class="overlay-menu"
+                hidden
+                aria-label="Paused"
+            >
+
+                <div class="pause-card">
+
+                    <p class="menu-kicker">
+                        STUDENT LIFE
+                    </p>
+
+                    <h2>
+                        PAUSED
+                    </h2>
+
+                    <p class="pause-description">
+                        Take a moment.
+                    </p>
+
+
+                    <div class="pause-actions">
+
+                        <button
+                            id="resume-button"
+                            class="menu-button primary"
+                            type="button"
+                        >
+                            RESUME
+                        </button>
+
+                        <button
+                            id="save-button"
+                            class="menu-button"
+                            type="button"
+                        >
+                            SAVE GAME
+                        </button>
+
+                        <button
+                            id="settings-button"
+                            class="menu-button"
+                            type="button"
+                        >
+                            SETTINGS
+                        </button>
+
+                        <button
+                            id="quit-button"
+                            class="menu-button danger"
+                            type="button"
+                        >
+                            QUIT TO TITLE
+                        </button>
+
+                    </div>
+
+                    <p class="menu-hint">
+                        ESC — Resume
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 SETTINGS
+            ============================================== -->
+
+            <section
+                id="settings-panel"
+                class="modal-panel settings-panel"
+                hidden
+                aria-label="Settings"
+            >
+
+                <div class="modal-header">
+
+                    <div>
+
+                        <p class="modal-kicker">
+                            GAME OPTIONS
+                        </p>
+
+                        <h2>
+                            Settings
+                        </h2>
+
+                    </div>
+
+                    <button
+                        id="settings-close"
+                        class="modal-close"
+                        type="button"
+                        aria-label="Close settings"
+                    >
+                        ×
+                    </button>
+
+                </div>
+
+
+                <div class="settings-list">
+
+
+                    <!-- Sound -->
+
+                    <div class="setting-row">
+
+                        <div>
+
+                            <h3>
+                                Sound Effects
+                            </h3>
+
+                            <p>
+                                Game interaction sounds
+                            </p>
+
+                        </div>
+
+                        <label class="toggle">
+
+                            <input
+                                type="checkbox"
+                                id="setting-sound"
+                                checked
+                            >
+
+                            <span class="toggle-slider"></span>
+
+                        </label>
+
+                    </div>
+
+
+                    <!-- Music -->
+
+                    <div class="setting-row">
+
+                        <div>
+
+                            <h3>
+                                Music
+                            </h3>
+
+                            <p>
+                                Background music
+                            </p>
+
+                        </div>
+
+                        <label class="toggle">
+
+                            <input
+                                type="checkbox"
+                                id="setting-music"
+                                checked
+                            >
+
+                            <span class="toggle-slider"></span>
+
+                        </label>
+
+                    </div>
+
+
+                    <!-- Notifications -->
+
+                    <div class="setting-row">
+
+                        <div>
+
+                            <h3>
+                                Notifications
+                            </h3>
+
+                            <p>
+                                Gameplay notifications
+                            </p>
+
+                        </div>
+
+                        <label class="toggle">
+
+                            <input
+                                type="checkbox"
+                                id="setting-notifications"
+                                checked
+                            >
+
+                            <span class="toggle-slider"></span>
+
+                        </label>
+
+                    </div>
+
+
+                    <!-- Screen shake -->
+
+                    <div class="setting-row">
+
+                        <div>
+
+                            <h3>
+                                Screen Effects
+                            </h3>
+
+                            <p>
+                                Camera movement and effects
+                            </p>
+
+                        </div>
+
+                        <label class="toggle">
+
+                            <input
+                                type="checkbox"
+                                id="setting-effects"
+                                checked
+                            >
+
+                            <span class="toggle-slider"></span>
+
+                        </label>
+
+                    </div>
+
+
+                    <!-- Quality -->
+
+                    <div class="setting-row">
+
+                        <div>
+
+                            <h3>
+                                Graphics Quality
+                            </h3>
+
+                            <p>
+                                Visual quality
+                            </p>
+
+                        </div>
+
+                        <select
+                            id="setting-quality"
+                            class="setting-select"
+                        >
+
+                            <option value="low">
+                                Low
+                            </option>
+
+                            <option
+                                value="medium"
+                                selected
+                            >
+                                Medium
+                            </option>
+
+                            <option value="high">
+                                High
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <div class="modal-footer">
+
+                    <button
+                        id="settings-reset"
+                        class="small-ui-button"
+                        type="button"
+                    >
+                        RESET SETTINGS
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 SLEEP / REST PANEL
+            ============================================== -->
+
+            <section
+                id="sleep-panel"
+                class="action-panel"
+                hidden
+                aria-label="Rest"
+            >
+
+                <div class="action-panel-icon">
+                    Z
+                </div>
+
+                <h2>
+                    Rest
+                </h2>
+
+                <p>
+                    Take some time to recover your energy.
+                </p>
+
+                <div class="action-panel-stats">
+
+                    <span>
+                        Energy
+                    </span>
+
+                    <strong>
+                        +25
+                    </strong>
+
+                </div>
+
+                <div class="action-panel-actions">
+
+                    <button
+                        id="rest-confirm"
+                        class="primary-button small"
+                        type="button"
+                    >
+                        REST
+                    </button>
+
+                    <button
+                        id="rest-cancel"
+                        class="secondary-button"
+                        type="button"
+                    >
+                        CANCEL
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 FOOD / KITCHEN PANEL
+            ============================================== -->
+
+            <section
+                id="food-panel"
+                class="action-panel"
+                hidden
+                aria-label="Food"
+            >
+
+                <div class="action-panel-icon">
+                    +
+                </div>
+
+                <h2>
+                    Mama's Kitchen
+                </h2>
+
+                <p>
+                    Have a meal before continuing your day.
+                </p>
+
+                <div class="action-panel-stats">
+
+                    <div>
+
+                        <span>
+                            COST
+                        </span>
+
+                        <strong>
+                            ₦500
+                        </strong>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            HUNGER
+                        </span>
+
+                        <strong>
+                            +30
+                        </strong>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            HAPPINESS
+                        </span>
+
+                        <strong>
+                            +5
+                        </strong>
+
+                    </div>
+
+                </div>
+
+                <div class="action-panel-actions">
+
+                    <button
+                        id="food-confirm"
+                        class="primary-button small"
+                        type="button"
+                    >
+                        EAT
+                    </button>
+
+                    <button
+                        id="food-cancel"
+                        class="secondary-button"
+                        type="button"
+                    >
+                        CANCEL
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 CLASS PANEL
+            ============================================== -->
+
+            <section
+                id="class-panel"
+                class="action-panel"
+                hidden
+                aria-label="Class"
+            >
+
+                <div class="action-panel-icon">
+                    §
+                </div>
+
+                <p class="modal-kicker">
+                    ACADEMICS
+                </p>
+
+                <h2>
+                    Attend Lecture
+                </h2>
+
+                <p>
+                    Attend your scheduled class and improve your academic progress.
+                </p>
+
+                <div class="action-panel-stats">
+
+                    <div>
+
+                        <span>
+                            DURATION
+                        </span>
+
+                        <strong>
+                            90 MIN
+                        </strong>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            ENERGY
+                        </span>
+
+                        <strong>
+                            -15
+                        </strong>
+
+                    </div>
+
+                </div>
+
+                <div class="action-panel-actions">
+
+                    <button
+                        id="class-confirm"
+                        class="primary-button small"
+                        type="button"
+                    >
+                        ATTEND
+                    </button>
+
+                    <button
+                        id="class-cancel"
+                        class="secondary-button"
+                        type="button"
+                    >
+                        NOT NOW
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 WORK PANEL
+            ============================================== -->
+
+            <section
+                id="work-panel"
+                class="action-panel"
+                hidden
+                aria-label="Work"
+            >
+
+                <div class="action-panel-icon">
+                    ₦
+                </div>
+
+                <p class="modal-kicker">
+                    EARN MONEY
+                </p>
+
+                <h2>
+                    Work Shift
+                </h2>
+
+                <p>
+                    Spend two hours working to earn money.
+                </p>
+
+                <div class="action-panel-stats">
+
+                    <div>
+
+                        <span>
+                            DURATION
+                        </span>
+
+                        <strong>
+                            2 HOURS
+                        </strong>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            ENERGY
+                        </span>
+
+                        <strong>
+                            -20
+                        </strong>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            EARNINGS
+                        </span>
+
+                        <strong>
+                            +₦1,500
+                        </strong>
+
+                    </div>
+
+                </div>
+
+                <div class="action-panel-actions">
+
+                    <button
+                        id="work-confirm"
+                        class="primary-button small"
+                        type="button"
+                    >
+                        WORK
+                    </button>
+
+                    <button
+                        id="work-cancel"
+                        class="secondary-button"
+                        type="button"
+                    >
+                        CANCEL
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 STUDY PANEL
+            ============================================== -->
+
+            <section
+                id="study-panel"
+                class="action-panel"
+                hidden
+                aria-label="Study"
+            >
+
+                <div class="action-panel-icon">
+                    +
+                </div>
+
+                <p class="modal-kicker">
+                    ACADEMICS
+                </p>
+
+                <h2>
+                    Study at Library
+                </h2>
+
+                <p>
+                    Spend an hour studying to improve your academic progress.
+                </p>
+
+                <div class="action-panel-stats">
+
+                    <div>
+
+                        <span>
+                            DURATION
+                        </span>
+
+                        <strong>
+                            1 HOUR
+                        </strong>
+
+                    </div>
+
+                    <div>
+
+                        <span>
+                            ENERGY
+                        </span>
+
+                        <strong>
+                            -10
+                        </strong>
+
+                    </div>
+
+                </div>
+
+                <div class="action-panel-actions">
+
+                    <button
+                        id="study-confirm"
+                        class="primary-button small"
+                        type="button"
+                    >
+                        STUDY
+                    </button>
+
+                    <button
+                        id="study-cancel"
+                        class="secondary-button"
+                        type="button"
+                    >
+                        CANCEL
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 BUS / TRANSPORT PANEL
+            ============================================== -->
+
+            <section
+                id="transport-panel"
+                class="modal-panel transport-panel"
+                hidden
+                aria-label="Transportation"
+            >
+
+                <div class="modal-header">
+
+                    <div>
+
+                        <p class="modal-kicker">
+                            TRANSPORT
+                        </p>
+
+                        <h2>
+                            Bus Stop
+                        </h2>
+
+                    </div>
+
+                    <button
+                        id="transport-close"
+                        class="modal-close"
+                        type="button"
+                        aria-label="Close transport"
+                    >
+                        ×
+                    </button>
+
+                </div>
+
+
+                <p class="transport-description">
+                    Choose where you want to travel.
+                </p>
+
+
+                <div
+                    id="transport-options"
+                    class="transport-options"
+                >
+
+                    <button
+                        class="transport-option"
+                        data-destination="campus"
+                        type="button"
+                    >
+
+                        <span class="transport-icon">
+                            🚌
+                        </span>
+
+                        <span>
+
+                            <strong>
+                                Main Campus
+                            </strong>
+
+                            <small>
+                                Free
+                            </small>
+
+                        </span>
+
+                    </button>
+
+
+                    <button
+                        class="transport-option"
+                        data-destination="residence"
+                        type="button"
+                    >
+
+                        <span class="transport-icon">
+                            🏠
+                        </span>
+
+                        <span>
+
+                            <strong>
+                                Residence
+                            </strong>
+
+                            <small>
+                                ₦300
+                            </small>
+
+                        </span>
+
+                    </button>
+
+
+                    <button
+                        class="transport-option"
+                        data-destination="city"
+                        type="button"
+                    >
+
+                        <span class="transport-icon">
+                            🌆
+                        </span>
+
+                        <span>
+
+                            <strong>
+                                City
+                            </strong>
+
+                            <small>
+                                ₦500
+                            </small>
+
+                        </span>
+
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 CHARACTER / AVATAR CUSTOMIZATION
+                 
+                 Scaffold for future clothing, appearance,
+                 accessories and customization.
+            ============================================== -->
+
+            <section
+                id="customization-panel"
+                class="modal-panel customization-panel"
+                hidden
+                aria-label="Character customization"
+            >
+
+                <div class="modal-header">
+
+                    <div>
+
+                        <p class="modal-kicker">
+                            PERSONAL STYLE
+                        </p>
+
+                        <h2>
+                            Customize
+                        </h2>
+
+                    </div>
+
+                    <button
+                        id="customization-close"
+                        class="modal-close"
+                        type="button"
+                        aria-label="Close customization"
+                    >
+                        ×
+                    </button>
+
+                </div>
+
+
+                <div class="customization-layout">
+
+                    <div
+                        id="customization-preview"
+                        class="customization-preview"
+                    >
+
+                        <div
+                            id="customization-character"
+                            class="customization-character"
+                        >
+                            ?
+                        </div>
+
+                    </div>
+
+
+                    <div class="customization-options">
+
+                        <div class="customization-group">
+
+                            <h3>
+                                Outfit
+                            </h3>
+
+                            <div
+                                id="outfit-options"
+                                class="option-grid"
+                            >
+
+                                <button
+                                    class="appearance-option active"
+                                    data-outfit="default"
+                                    type="button"
+                                >
+                                    Default
+                                </button>
+
+                                <button
+                                    class="appearance-option"
+                                    data-outfit="casual"
+                                    type="button"
+                                >
+                                    Casual
+                                </button>
+
+                                <button
+                                    class="appearance-option"
+                                    data-outfit="formal"
+                                    type="button"
+                                >
+                                    Formal
+                                </button>
+
+                                <button
+                                    class="appearance-option"
+                                    data-outfit="sport"
+                                    type="button"
+                                >
+                                    Sports
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="customization-group">
+
+                            <h3>
+                                Style
+                            </h3>
+
+                            <div
+                                id="style-options"
+                                class="option-grid"
+                            >
+
+                                <button
+                                    class="appearance-option"
+                                    data-style="style1"
+                                    type="button"
+                                >
+                                    Style 1
+                                </button>
+
+                                <button
+                                    class="appearance-option"
+                                    data-style="style2"
+                                    type="button"
+                                >
+                                    Style 2
+                                </button>
+
+                                <button
+                                    class="appearance-option"
+                                    data-style="style3"
+                                    type="button"
+                                >
+                                    Style 3
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="modal-footer">
+
+                    <button
+                        id="customization-save"
+                        class="primary-button small"
+                        type="button"
+                    >
+                        SAVE LOOK
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 SAVE GAME FEEDBACK
+            ============================================== -->
+
+            <div
+                id="save-indicator"
+                class="save-indicator"
+                hidden
+            >
+
+                <span class="save-dot"></span>
+
+                <span>
+                    Game saved
+                </span>
+
+            </div>
+
+
+            <!-- =============================================
+                 MOBILE CONTROLS
+            ============================================== -->
+
+            <div
+                id="mobile-controls"
+                class="mobile-controls"
+                aria-hidden="true"
+            >
+
+                <!-- Direction pad -->
+
+                <div class="mobile-dpad">
+
+                    <button
+                        id="mobile-up"
+                        class="mobile-control-button up"
+                        type="button"
+                        aria-label="Move up"
+                    >
+                        ▲
+                    </button>
+
+                    <button
+                        id="mobile-left"
+                        class="mobile-control-button left"
+                        type="button"
+                        aria-label="Move left"
+                    >
+                        ◀
+                    </button>
+
+                    <button
+                        id="mobile-down"
+                        class="mobile-control-button down"
+                        type="button"
+                        aria-label="Move down"
+                    >
+                        ▼
+                    </button>
+
+                    <button
+                        id="mobile-right"
+                        class="mobile-control-button right"
+                        type="button"
+                        aria-label="Move right"
+                    >
+                        ▶
+                    </button>
+
+                </div>
+
+
+                <!-- Action buttons -->
+
+                <div class="mobile-actions">
+
+                    <button
+                        id="mobile-interact"
+                        class="mobile-action-button interact"
+                        type="button"
+                        aria-label="Interact"
+                    >
+                        E
+                    </button>
+
+                    <button
+                        id="mobile-inventory"
+                        class="mobile-action-button"
+                        type="button"
+                        aria-label="Open inventory"
+                    >
+                        🎒
+                    </button>
+
+                    <button
+                        id="mobile-phone"
+                        class="mobile-action-button"
+                        type="button"
+                        aria-label="Open phone"
+                    >
+                        📱
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- =============================================
+                 KEYBOARD SHORTCUT HELP
+            ============================================== -->
+
+            <section
+                id="controls-help"
+                class="controls-help"
+                hidden
+                aria-label="Controls"
+            >
+
+                <div class="modal-header">
+
+                    <div>
+
+                        <p class="modal-kicker">
+                            CONTROLS
+                        </p>
+
+                        <h2>
+                            Keyboard
+                        </h2>
+
+                    </div>
+
+                    <button
+                        id="controls-help-close"
+                        class="modal-close"
+                        type="button"
+                        aria-label="Close controls"
+                    >
+                        ×
+                    </button>
+
+                </div>
+
+
+                <div class="controls-grid">
+
+                    <div class="control-row">
+
+                        <span class="key-group">
+
+                            <kbd>
+                                W
+                            </kbd>
+
+                            <kbd>
+                                A
+                            </kbd>
+
+                            <kbd>
+                                S
+                            </kbd>
+
+                            <kbd>
+                                D
+                            </kbd>
+
+                        </span>
+
+                        <span>
+                            Move
+                        </span>
+
+                    </div>
+
+
+                    <div class="control-row">
+
+                        <kbd>
+                            E
+                        </kbd>
+
+                        <span>
+                            Interact
+                        </span>
+
+                    </div>
+
+
+                    <div class="control-row">
+
+                        <kbd>
+                            I
+                        </kbd>
+
+                        <span>
+                            Inventory
+                        </span>
+
+                    </div>
+
+
+                    <div class="control-row">
+
+                        <kbd>
+                            M
+                        </kbd>
+
+                        <span>
+                            Map
+                        </span>
+
+                    </div>
+
+
+                    <div class="control-row">
+
+                        <kbd>
+                            P
+                        </kbd>
+
+                        <span>
+                            Phone
+                        </span>
+
+                    </div>
+
+
+                    <div class="control-row">
+
+                        <kbd>
+                            ESC
+                        </kbd>
+
+                        <span>
+                            Close / Pause
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+        </div>
+
+
+        <!-- =================================================
+             GLOBAL MODAL BACKDROP
+        ================================================== -->
+
+        <div
+            id="modal-backdrop"
+            class="modal-backdrop"
+            hidden
+            aria-hidden="true"
+        ></div>
+
+
+        <!-- =================================================
+             ACCESSIBILITY / SCREEN READER STATUS
+        ================================================== -->
+
+        <div
+            id="game-status"
+            class="sr-only"
+            aria-live="polite"
+            aria-atomic="true"
+        >
+            Student Life is ready.
+        </div>
+
+
+        <!-- =================================================
+             NOSCRIPT MESSAGE
+        ================================================== -->
+
+        <noscript>
+
+            <div class="noscript-message">
+
+                <h1>
+                    JavaScript Required
+                </h1>
+
+                <p>
+                    Student Life requires JavaScript to run.
+                    Please enable JavaScript in your browser and reload the game.
+                </p>
+
+            </div>
+
+        </noscript>
+
+
+    </div>
+
+
+    <!-- =====================================================
+         GAME JAVASCRIPT
+         
+         This remains at the bottom so the HTML is loaded
+         before the game attempts to access its elements.
+    ====================================================== -->
+
+    <script src="game.js"></script>
+
+
+</body>
+
+</html>
