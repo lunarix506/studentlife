@@ -493,14 +493,16 @@
 
         form.addEventListener("submit", (event) => {
 
-            event.preventDefault();
+    event.preventDefault();
 
-            const character = getCharacterData();
+    alert("FORM SUBMIT WORKS");
 
-            if (!character) return;
+    const character = getCharacterData();
 
-            startGame(character);
-        });
+    if (!character) return;
+
+    startGame(character);
+});
     }
 
 
