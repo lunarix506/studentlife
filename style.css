@@ -285,7 +285,9 @@ canvas {
 
     z-index: 1000;
 }
-
+.screen:not(.active) {
+    display: none !important;
+}
 
 .screen[hidden] {
     display: none !important;
