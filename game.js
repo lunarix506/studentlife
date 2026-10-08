@@ -828,7 +828,7 @@
     setText("#location-name", name);
     setText("#location-subtitle", subtitle);
     }
-    }
+    
 
 
     /* =========================================================
@@ -842,9 +842,9 @@
         updateTimeHUD();
 
         setLocation(
-            gameState.location.current,
-            "Campus"
-        );
+    gameState.location,
+    "Campus"
+);
     }
 
 
