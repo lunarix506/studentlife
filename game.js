@@ -495,8 +495,6 @@
 
     event.preventDefault();
 
-    alert("FORM SUBMIT WORKS");
-
     const character = getCharacterData();
 
     if (!character) return;
@@ -12939,4 +12937,69 @@ console.log(
    STUDENT LIFE GAME — END OF GAME.JS
    ============================================================ */
 
+
+   startGame = function(character) {
+    if (!character) return;
+
+    console.log("Starting game with character:", character);
+
+    try {
+        resetGameState();
+
+        gameState.player.name = character.name;
+        gameState.player.age = character.age;
+        gameState.player.gender = character.gender;
+        gameState.player.course = character.course;
+
+        gameState.started = true;
+        gameStarted = true;
+
+        updateLoading(40, "Preparing your campus life...");
+
+        // Show the actual game screen first
+        showGameScreen();
+
+        // Start Phaser
+        initializePhaser();
+
+        // Initialize the extra systems AFTER the game has started
+        setTimeout(() => {
+            try {
+                normalizeGameState();
+                enforceStatLimits();
+
+                initializeAdvancedSystems();
+                initializePhoneSystem();
+
+                refreshAllUI();
+                updateInventoryUI();
+                updateRelationshipUI();
+                updateProfileUI();
+                updateQuestUI();
+
+                startAutoSave();
+                saveGame();
+
+                console.log("Game fully initialized.");
+            } catch (error) {
+                console.error("Optional system error:", error);
+            }
+        }, 500);
+
+    } catch (error) {
+        console.error("GAME START ERROR:", error);
+
+        gameStarted = false;
+        gameState.started = false;
+
+        alert("Game error: " + error.message);
+    }
+};
+
 })();
+
+// ==========================================
+// FINAL CLEAN START GAME
+// Overrides the earlier startGame wrappers
+// ==========================================
+
