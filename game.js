@@ -1013,197 +1013,7 @@ function refreshAllUI() {
            WORLD BACKGROUND
            ================================================= */
 
-        createWorldBackground() {
-
-    const graphics = this.add.graphics();
-
-    /*
-     * =========================================================
-     * OSOGBO CITY GROUND
-     * =========================================================
-     */
-
-    graphics.fillStyle(0x5d7b45, 1);
-    graphics.fillRect(
-        0,
-        0,
-        WORLD_WIDTH,
-        WORLD_HEIGHT
-    );
-
-
-    /*
-     * Subtle terrain variation.
-     */
-
-    graphics.fillStyle(0x66864d, 0.28);
-
-    graphics.fillRect(
-        0,
-        0,
-        WORLD_WIDTH,
-        520
-    );
-
-    graphics.fillStyle(0x4f7040, 0.22);
-
-    graphics.fillRect(
-        0,
-        1500,
-        WORLD_WIDTH,
-        700
-    );
-
-
-    /*
-     * =========================================================
-     * OSOGBO ROAD NETWORK
-     * =========================================================
-     *
-     * This is a stylized game-scale representation of the
-     * real Osogbo road relationships.
-     */
-
-
-    const roads = {
-
-        /*
-         * Main north/south spine:
-         * Okefia → Alekunwodo → Ita Olokan
-         */
-
-        okefiaAlekunwodo: [
-            [2050, 0],
-            [2020, 300],
-            [1980, 600],
-            [1900, 900],
-            [1810, 1200],
-            [1700, 1500],
-            [1600, WORLD_HEIGHT]
-        ],
-
-        /*
-         * Station Road → Oja-Oba
-         */
-
-        stationOjaOba: [
-            [300, 0],
-            [420, 280],
-            [560, 540],
-            [760, 780],
-            [980, 980]
-        ],
-
-        /*
-         * Oja-Oba → Old Garage
-         */
-
-        ojaOldGarage: [
-            [980, 980],
-            [1250, 900],
-            [1500, 820],
-            [1780, 760],
-            [2100, 700]
-        ],
-
-        /*
-         * Oke-Baale → Oja-Oba
-         */
-
-        okeBaaleOjaOba: [
-            [700, 1500],
-            [760, 1300],
-            [820, 1120],
-            [900, 980]
-        ],
-
-        /*
-         * Oroki → Ilobu Road
-         */
-
-        oroKiIlobu: [
-            [900, 1850],
-            [1120, 1680],
-            [1350, 1530],
-            [1600, 1390],
-            [1900, 1260],
-            [2200, 1160]
-        ],
-
-        /*
-         * Oke-Onitea / Igbona connection
-         */
-
-        okeOnitea: [
-            [2450, 350],
-            [2380, 620],
-            [2300, 900],
-            [2200, 1160]
-        ],
-
-        /*
-         * Inner ring — western side
-         */
-
-        westernRing: [
-            [300, 500],
-            [600, 620],
-            [900, 720],
-            [1200, 760],
-            [1500, 820]
-        ],
-
-        /*
-         * Inner ring — southern connection
-         */
-
-        southernRing: [
-            [700, 1500],
-            [1050, 1570],
-            [1350, 1600],
-            [1650, 1580],
-            [1950, 1500],
-            [2250, 1380]
-        ]
-    };
-
-
-    /*
-     * =========================================================
-     * ROAD DRAWING
-     * =========================================================
-     */
-
-    const drawRoad = (points, width = 105) => {
-
-        /*
-         * Road shadow / drainage edge
-         */
-
-        graphics.lineStyle(
-            width + 22,
-            0x384238,
-            1
-        );
-
-        graphics.beginPath();
-
-        graphics.moveTo(
-            points[0][0],
-            points[0][1]
-        );
-
-        for (let i = 1; i < points.length; i++) {
-
-            graphics.lineTo(
-                points[i][0],
-                points[i][1]
-            );
-        }
-
-        graphics.strokePath();
-
-
+  
         /*
          * Main asphalt
          */
@@ -1438,48 +1248,7 @@ function refreshAllUI() {
         2550,
         0
     );
-
-    graphics.lineTo(
-        2630,
-        350
-    );
-
-    graphics.lineTo(
-        2520,
-        700
-    );
-
-    graphics.lineTo(
-        2600,
-        1050
-    );
-
-    graphics.lineTo(
-        2480,
-        1400
-    );
-
-    graphics.lineTo(
-        2550,
-        1750
-    );
-
-    graphics.lineTo(
-        2440,
-        WORLD_HEIGHT
-    );
-
-    graphics.lineTo(
-        WORLD_WIDTH,
-        WORLD_HEIGHT
-    );
-
-    graphics.lineTo(
-        WORLD_WIDTH,
-        0
-    );
-
-    graphics.closePath();
+();
 
     graphics.fillPath();
 
@@ -1526,100 +1295,106 @@ function refreshAllUI() {
             [1700, 500],
             [1800, 700]
         ]
-    ];
+      createWorldBackground() {
 
+    const graphics =
+        this.add.graphics();
 
-    paths.forEach(
-        (path) => {
+    graphics.fillStyle(
+        COLORS.grass,
+        1
+    );
 
-            graphics.lineStyle(
-                26,
-                0xb5ad8e,
-                0.8
-            );
-
-            graphics.beginPath();
-
-            graphics.moveTo(
-                path[0][0],
-                path[0][1]
-            );
-
-            for (
-                let i = 1;
-                i < path.length;
-                i++
-            ) {
-
-                graphics.lineTo(
-                    path[i][0],
-                    path[i][1]
-                );
-            }
-
-            graphics.strokePath();
-        }
+    graphics.fillRect(
+        0,
+        0,
+        WORLD_WIDTH,
+        WORLD_HEIGHT
     );
 
 
     /*
-     * =========================================================
-     * CITY NAME
-     * =========================================================
+     * Large campus roads.
+     */
+    graphics.fillStyle(
+        COLORS.road,
+        1
+    );
+
+
+    graphics.fillRect(
+        0,
+        900,
+        WORLD_WIDTH,
+        180
+    );
+
+    graphics.fillRect(
+        1450,
+        0,
+        180,
+        WORLD_HEIGHT
+    );
+
+
+    /*
+     * Road edges.
+     */
+    graphics.lineStyle(
+        4,
+        COLORS.roadEdge,
+        1
+    );
+
+
+    graphics.strokeRect(
+        0,
+        900,
+        WORLD_WIDTH,
+        180
+    );
+
+    graphics.strokeRect(
+        1450,
+        0,
+        180,
+        WORLD_HEIGHT
+    );
+
+
+    /*
+     * Simple campus areas.
      */
 
-    const cityTitle =
-        this.add.text(
-            1600,
-            120,
-            "OSOGBO",
-            {
-                fontFamily: "Arial",
-                fontSize: "34px",
-                fontStyle: "bold",
-                color: "#ffffff",
-                stroke: "#263526",
-                strokeThickness: 7
-            }
-        );
+    this.createGroundArea(
+        250,
+        250,
+        650,
+        420
+    );
 
-    cityTitle.setOrigin(0.5);
-    cityTitle.setAlpha(0.82);
-    cityTitle.setDepth(2);
-       }
+    this.createGroundArea(
+        1900,
+        250,
+        800,
+        420
+    );
 
-            /*
-             * Simple campus areas.
-             */
+    this.createGroundArea(
+        250,
+        1300,
+        650,
+        500
+    );
 
-            this.createGroundArea(
-                250,
-                250,
-                650,
-                420
-            );
+    this.createGroundArea(
+        1900,
+        1300,
+        800,
+        500
+    );
+    } 
 
-            this.createGroundArea(
-                1900,
-                250,
-                800,
-                420
-            );
-
-            this.createGroundArea(
-                250,
-                1300,
-                650,
-                500
-            );
-
-            this.createGroundArea(
-                1900,
-                1300,
-                800,
-                500
-            );
-        }
 
 
         createGroundArea(
