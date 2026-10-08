@@ -845,18 +845,6 @@ function refreshAllUI() {
        20. INITIAL UI UPDATE
        ========================================================= */
 
-    function refreshAllUI() {
-
-        updatePlayerHUD();
-
-        updateTimeHUD();
-
-        setLocation(
-    gameState.location,
-    "Campus"
-);
-    }
-
 
     /* =========================================================
        21. BOOT SCENE
