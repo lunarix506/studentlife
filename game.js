@@ -823,18 +823,11 @@
        ========================================================= */
 
     function setLocation(name, subtitle = "") {
+    gameState.location = name;
 
-        gameState.location.current = name;
-
-        setText(
-            "#location-name",
-            name
-        );
-
-        setText(
-            "#location-subtitle",
-            subtitle
-        );
+    setText("#location-name", name);
+    setText("#location-subtitle", subtitle);
+    }
     }
 
 
@@ -2560,8 +2553,7 @@ function updateWorldSystems(delta) {
 
 function prepareCampusState() {
 
-    gameState.location.current =
-        "University Campus";
+    gameState.location = "university";
 
     gameState.time.day =
         1;
@@ -12902,7 +12894,7 @@ function initializeFinalUI() {
 
     updatePhoneClock();
     updateTimeHUD();
-    updateHUD();
+    updatePlayerHUD();
 }
 
 
