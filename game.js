@@ -827,7 +827,17 @@
 
     setText("#location-name", name);
     setText("#location-subtitle", subtitle);
-    }
+}
+
+function refreshAllUI() {
+    updatePlayerHUD();
+    updateTimeHUD();
+
+    setLocation(
+        gameState.location,
+        "Campus"
+    );
+           }
     
 
 
