@@ -6082,7 +6082,673 @@ select {
         transparent;
 }
 
+/* =========================================================
+   STUDENT LIFE — VISUAL POLISH v1
+   UI ONLY — DO NOT REMOVE EXISTING SYSTEMS
+   ========================================================= */
 
+/* ---------- GLOBAL GAME FEEL ---------- */
+
+#game-container {
+    background: #18251a !important;
+}
+
+#game-container canvas {
+    image-rendering: auto !important;
+}
+
+/* ---------- GAME UI ---------- */
+
+#game-ui {
+    font-family:
+        Inter,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+}
+
+/* ---------- HUD GLASS ---------- */
+
+.hud-panel {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(9, 14, 10, 0.94),
+            rgba(3, 7, 4, 0.91)
+        ) !important;
+
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+
+    box-shadow:
+        0 12px 35px rgba(0, 0, 0, 0.38),
+        inset 0 1px 0 rgba(255, 255, 255, 0.045) !important;
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+}
+
+/* ---------- PLAYER HUD ---------- */
+
+.player-hud {
+    top: 16px !important;
+    left: 16px !important;
+
+    width: 265px !important;
+
+    padding: 14px !important;
+
+    border-radius: 16px !important;
+}
+
+.hud-player-header {
+    gap: 11px !important;
+    padding-bottom: 12px !important;
+}
+
+.hud-avatar {
+    width: 42px !important;
+    height: 42px !important;
+
+    border: 1px solid rgba(151, 196, 119, 0.45) !important;
+
+    background:
+        linear-gradient(
+            145deg,
+            #38533a,
+            #101811
+        ) !important;
+
+    box-shadow:
+        0 0 20px rgba(126, 173, 99, 0.08);
+}
+
+.hud-player-name {
+    font-size: 14px !important;
+    letter-spacing: 0.1px;
+}
+
+.hud-player-course {
+    margin-top: 3px !important;
+    font-size: 9px !important;
+    letter-spacing: 0.4px;
+}
+
+/* ---------- HUD ICON ---------- */
+
+.hud-icon-button {
+    width: 31px !important;
+    height: 31px !important;
+
+    border-radius: 9px !important;
+
+    background:
+        rgba(255, 255, 255, 0.045) !important;
+
+    transition:
+        transform 0.15s ease,
+        background 0.15s ease,
+        border-color 0.15s ease !important;
+}
+
+.hud-icon-button:active {
+    transform: scale(0.94);
+}
+
+/* ---------- MONEY ---------- */
+
+.hud-money {
+    padding: 12px 2px !important;
+}
+
+.hud-money-label {
+    color: #758178 !important;
+    font-size: 8px !important;
+    letter-spacing: 1.5px !important;
+}
+
+#money-value {
+    color: #c5df9f !important;
+    font-size: 17px !important;
+    letter-spacing: 0.2px;
+}
+
+/* ---------- NEEDS ---------- */
+
+.hud-needs {
+    gap: 10px !important;
+    padding-top: 12px !important;
+}
+
+.need-header {
+    margin-bottom: 5px !important;
+
+    color: #829087 !important;
+
+    font-size: 8px !important;
+    letter-spacing: 1px !important;
+}
+
+.need-header strong {
+    color: #d9dfda !important;
+}
+
+.stat-bar {
+    height: 6px !important;
+
+    background:
+        rgba(255, 255, 255, 0.075) !important;
+
+    box-shadow:
+        inset 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
+.stat-bar-fill {
+    box-shadow:
+        0 0 8px rgba(255, 255, 255, 0.06);
+}
+
+/* ---------- TIME PANEL ---------- */
+
+.time-panel {
+    top: 16px !important;
+    right: 16px !important;
+
+    width: 145px !important;
+
+    padding: 12px 14px !important;
+
+    border-radius: 15px !important;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(9, 14, 10, 0.94),
+            rgba(3, 7, 4, 0.91)
+        ) !important;
+
+    border: 1px solid rgba(255, 255, 255, 0.11) !important;
+
+    box-shadow:
+        0 12px 35px rgba(0, 0, 0, 0.35) !important;
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+}
+
+.time-value {
+    font-size: 21px !important;
+    font-weight: 700 !important;
+
+    letter-spacing: 0.5px;
+
+    color: #f0f4ef !important;
+}
+
+.time-period {
+    color: #91a48e !important;
+    font-size: 8px !important;
+    letter-spacing: 1.3px;
+}
+
+.day-value,
+.date-value {
+    color: #758178 !important;
+}
+
+/* ---------- LOCATION ---------- */
+
+.location-display {
+    top: 100px !important;
+
+    padding: 7px 14px !important;
+
+    border-radius: 999px !important;
+
+    background:
+        rgba(4, 8, 5, 0.72) !important;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.08) !important;
+
+    box-shadow:
+        0 8px 25px rgba(0, 0, 0, 0.22);
+
+    backdrop-filter: blur(12px);
+}
+
+.location-name {
+    color: #e9eee8 !important;
+
+    font-size: 11px !important;
+    font-weight: 800 !important;
+
+    letter-spacing: 1.8px !important;
+}
+
+.location-subtitle {
+    margin-top: 2px;
+
+    color: #829087 !important;
+
+    font-size: 8px !important;
+    letter-spacing: 0.8px;
+}
+
+/* ---------- QUEST ---------- */
+
+.quest-tracker {
+    border-radius: 15px !important;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(9, 14, 10, 0.92),
+            rgba(4, 8, 5, 0.88)
+        ) !important;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.10) !important;
+
+    box-shadow:
+        0 12px 35px rgba(0, 0, 0, 0.32) !important;
+
+    backdrop-filter: blur(16px);
+}
+
+.quest-tracker::before {
+    opacity: 0.5;
+}
+
+.current-quest-title,
+#current-quest-title {
+    color: #e7eee5 !important;
+}
+
+.current-quest-description,
+#current-quest-description {
+    color: #8d9a90 !important;
+}
+
+.quest-progress-bar {
+    height: 5px !important;
+
+    border-radius: 999px !important;
+
+    background:
+        rgba(255, 255, 255, 0.07) !important;
+}
+
+.quest-progress-fill {
+    border-radius: 999px !important;
+}
+
+/* ---------- MINIMAP ---------- */
+
+.minimap {
+    border-radius: 16px !important;
+
+    overflow: hidden;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.13) !important;
+
+    background:
+        rgba(4, 8, 5, 0.92) !important;
+
+    box-shadow:
+        0 15px 40px rgba(0, 0, 0, 0.42) !important;
+}
+
+#minimap-world {
+    opacity: 0.95;
+}
+
+#minimap-player {
+    filter:
+        drop-shadow(
+            0 0 5px rgba(170, 220, 130, 0.8)
+        );
+}
+
+/* ---------- INTERACTION ---------- */
+
+.interaction-prompt {
+    bottom: 28px !important;
+
+    padding: 8px 14px !important;
+
+    border-radius: 999px !important;
+
+    background:
+        rgba(4, 8, 5, 0.92) !important;
+
+    border:
+        1px solid rgba(151, 196, 119, 0.20) !important;
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.38) !important;
+
+    backdrop-filter: blur(15px);
+}
+
+.interaction-key {
+    min-width: 28px !important;
+    height: 26px !important;
+
+    border-radius: 7px !important;
+
+    background:
+        rgba(126, 173, 99, 0.12) !important;
+
+    border:
+        1px solid rgba(151, 196, 119, 0.35) !important;
+
+    color: #b7d59a !important;
+}
+
+.interaction-text {
+    color: #dce4dc !important;
+
+    font-size: 10px !important;
+    font-weight: 600;
+}
+
+/* ---------- NOTIFICATIONS ---------- */
+
+.game-notification {
+    border-radius: 13px !important;
+
+    background:
+        rgba(7, 12, 8, 0.94) !important;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.11) !important;
+
+    box-shadow:
+        0 15px 40px rgba(0, 0, 0, 0.4) !important;
+
+    backdrop-filter: blur(16px);
+}
+
+/* ---------- ALL MODALS ---------- */
+
+.modal-panel,
+.action-panel,
+.overlay-menu {
+    border-radius: 20px !important;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(15, 21, 16, 0.98),
+            rgba(5, 9, 6, 0.98)
+        ) !important;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.11) !important;
+
+    box-shadow:
+        0 30px 90px rgba(0, 0, 0, 0.65),
+        inset 0 1px 0 rgba(255, 255, 255, 0.035) !important;
+
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+}
+
+/* ---------- DIALOGUE ---------- */
+
+.dialogue-panel {
+    border-radius: 20px !important;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(13, 19, 14, 0.97),
+            rgba(4, 8, 5, 0.97)
+        ) !important;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.11) !important;
+
+    box-shadow:
+        0 25px 70px rgba(0, 0, 0, 0.55) !important;
+
+    backdrop-filter: blur(20px);
+}
+
+.dialogue-speaker {
+    color: #edf2ec !important;
+}
+
+.dialogue-role {
+    color: #87a878 !important;
+}
+
+.dialogue-body {
+    color: #c2ccc3 !important;
+
+    line-height: 1.65 !important;
+}
+
+.dialogue-choice {
+    border-radius: 11px !important;
+
+    background:
+        rgba(255, 255, 255, 0.035) !important;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.075) !important;
+
+    color: #d7ded8 !important;
+
+    transition:
+        transform 0.15s ease,
+        background 0.15s ease,
+        border-color 0.15s ease !important;
+}
+
+.dialogue-choice:hover {
+    transform: translateY(-1px);
+
+    background:
+        rgba(126, 173, 99, 0.10) !important;
+
+    border-color:
+        rgba(151, 196, 119, 0.25) !important;
+}
+
+/* ---------- PHONE ---------- */
+
+.phone-panel {
+    border-radius: 28px !important;
+
+    background:
+        linear-gradient(
+            145deg,
+            #121913,
+            #050805
+        ) !important;
+
+    border:
+        2px solid rgba(255, 255, 255, 0.10) !important;
+
+    box-shadow:
+        0 35px 100px rgba(0, 0, 0, 0.65) !important;
+}
+
+.phone-app {
+    border-radius: 14px !important;
+
+    background:
+        rgba(255, 255, 255, 0.045) !important;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.06) !important;
+
+    transition:
+        transform 0.15s ease,
+        background 0.15s ease;
+}
+
+.phone-app:active {
+    transform: scale(0.95);
+}
+
+/* ---------- SHOP / INVENTORY ---------- */
+
+.shop-item,
+.inventory-item {
+    border-radius: 13px !important;
+
+    background:
+        rgba(255, 255, 255, 0.035) !important;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.07) !important;
+
+    transition:
+        transform 0.15s ease,
+        background 0.15s ease,
+        border-color 0.15s ease;
+}
+
+.shop-item:hover,
+.inventory-item:hover {
+    background:
+        rgba(126, 173, 99, 0.08) !important;
+
+    border-color:
+        rgba(151, 196, 119, 0.20) !important;
+
+    transform: translateY(-2px);
+}
+
+/* ---------- BUTTONS ---------- */
+
+button {
+    transition:
+        transform 0.15s ease,
+        background 0.15s ease,
+        border-color 0.15s ease,
+        box-shadow 0.15s ease !important;
+}
+
+button:active {
+    transform: scale(0.97);
+}
+
+/* ---------- MOBILE HUD ---------- */
+
+@media (max-width: 700px) {
+
+    .player-hud {
+        top: 9px !important;
+        left: 9px !important;
+
+        width: 205px !important;
+
+        padding: 10px !important;
+
+        border-radius: 14px !important;
+    }
+
+    .hud-avatar {
+        width: 34px !important;
+        height: 34px !important;
+    }
+
+    .hud-player-name {
+        font-size: 11px !important;
+    }
+
+    .hud-player-course {
+        font-size: 7px !important;
+    }
+
+    .hud-money {
+        padding: 8px 2px !important;
+    }
+
+    #money-value {
+        font-size: 14px !important;
+    }
+
+    .hud-needs {
+        gap: 7px !important;
+    }
+
+    .time-panel {
+        top: 9px !important;
+        right: 9px !important;
+
+        width: 108px !important;
+
+        padding: 9px !important;
+
+        border-radius: 13px !important;
+    }
+
+    .time-value {
+        font-size: 17px !important;
+    }
+
+    .location-display {
+        top: 82px !important;
+    }
+
+    .interaction-prompt {
+        bottom: 103px !important;
+    }
+}
+
+/* ---------- SMALL PHONES ---------- */
+
+@media (max-width: 420px) {
+
+    .player-hud {
+        width: 185px !important;
+    }
+
+    .time-panel {
+        width: 96px !important;
+    }
+
+    .location-display {
+        top: 77px !important;
+    }
+
+    .location-name {
+        font-size: 9px !important;
+    }
+}
+
+/* ---------- REMOVE HARSH SCROLLBARS ---------- */
+
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background:
+        rgba(126, 173, 99, 0.28);
+
+    border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background:
+        rgba(126, 173, 99, 0.45);
+}
+
+/* =========================================================
+   END VISUAL POLISH v1
+   ========================================================= */
 /* =========================================================
    END OF MASTER STYLE SYSTEM
 ========================================================= */
